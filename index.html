@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>이제 고민하지 마! 내가 골라 줄게</title>
+    <!-- 귀여운 둥근 폰트 (Jua) -->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- 이미지 크롭 라이브러리 (Cropper.js) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fdf5e6;
+            background-image: 
+                linear-gradient(90deg, rgba(162, 212, 195, 0.25) 50%, transparent 50%),
+                linear-gradient(rgba(243, 178, 185, 0.25) 50%, transparent 50%);
+            background-size: 50px 50px;
+            color: #5c4332;
+            font-family: 'Jua', sans-serif;
+            font-weight: 400; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px 10px 30px 10px; 
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin: 0 auto; 
+        }
+
+        /* ---------------- [ 모드 전환 스위치 (상단 중앙) ] ---------------- */
+        .mode-switch {
+            display: flex;
+            background-color: #ebd9c0;
+            padding: 4px;
+            border-radius: 20px;
+            border: 2px solid #d4a373;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            gap: 4px;
+            z-index: 20;
+        }
+
+        .mode-btn {
+            font-family: 'Jua', sans-serif;
+            border: none;
+            background: transparent;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            color: #8c6849;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active {
+            background-color: #fffbf2;
+            color: #5c4332;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        /* ---------------- [ 상단 우드 간판 ] ---------------- */
+        .wood-sign {
+            background-color: #d4a373;
+            color: #fff;
+            padding: 6px 35px; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            text-shadow: 1px 1px 0px #ab7a4b;
+            border: 2px solid #ab7a4b;
+            margin-top: 18px; 
+            margin-bottom: 15px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 0px rgba(212, 163, 115, 0.2); 
+        }
+        
+        .wood-sign::before, .wood-sign::after {
+            content: '';
+            position: absolute;
+            top: -18px; 
+            width: 8px;
+            height: 18px;
+            background-color: #a87e5b; 
+            border: 2px solid #8c5a2b; 
+            border-bottom: none; 
+            z-index: -1; 
+        }
+        .wood-sign::before { left: 20px; }
+        .wood-sign::after { right: 20px; }
+
+        .nail {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #78716c; 
+            border-radius: 50%;
+            top: 5px;
+            box-shadow: inset 1px 1px 0px rgba(255,255,255,0.4), 1px 1px 1px rgba(0,0,0,0.3);
+        }
+        .nail-left { left: 21px; }
+        .nail-right { right: 21px; }
+
+        /* ---------------- [ 인덱스 탭 ] ---------------- */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            gap: 3px;
+            margin-bottom: -4px; 
+            z-index: 1;
+            align-items: flex-end; 
+        }
+
+        .tab-btn {
+            font-family: 'Jua', sans-serif;
+            font-weight: 400;
+            flex: 1;
+            padding: 8px 2px 12px 2px; 
+            font-size: 13px; 
+            border: 2px solid #d4a373;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: inset 0 3px 0px rgba(255, 255, 255, 0.4);
+            color: #5c4332;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tab-btn.active {
+            transform: translateY(-4px); 
+            padding-bottom: 16px; 
+            z-index: 5;
+            box-shadow: inset 0 4px 0px rgba(255, 255, 255, 0.6), 0 -2px 5px rgba(0,0,0,0.05);
+            font-size: 13.5px; 
+        }
+
+        .tab-do { background-color: #c5e3d5; } 
+        .tab-buy { background-color: #f6c5c8; }
+        .tab-eat { background-color: #fce19a; }
+
+        /* ---------------- [ 메인 게임 창 ] ---------------- */
+        .game-window {
+            background-color: #fffbf2;
+            padding: 15px 12px 18px; 
+            width: 100%;
+            border: 3px solid #d4a373;
+            border-radius: 16px;
+            box-shadow: 
+                inset 0 0 0 5px #f4e8d3,
+                0 6px 0px rgba(212, 163, 115, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 포토카드 */
+        .photocard-wrapper {
+            width: 250px; 
+            height: 360px; 
+            background-color: #fdf5e6;
+            border: 6px solid #d4a373;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 6px rgba(92, 67, 50, 0.2), 3px 3px 0 rgba(212, 163, 115, 0.3);
+            transition: transform 0.2s;
+            margin-bottom: 15px; 
+        }
+        .photocard-wrapper:hover {
+            transform: rotate(-2deg) scale(1.02);
+        }
+        .photocard-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            border-radius: 4px;
+        }
+        .upload-text {
+            color: #a87e5b;
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .upload-text .paw {
+            font-size: 28px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        /* 구름 말풍선 */
+        .speech-cloud {
+            position: relative;
+            background: #ffffff;
+            color: #5c4332;
+            font-size: 15px; 
+            padding: 10px 12px; 
+            width: 90%;
+            border: 3px solid #d4a373;
+            border-radius: 16px 10px 16px 10px;
+            text-align: center;
+            min-height: 40px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: keep-all;
+            box-shadow: 2px 2px 0px rgba(212, 163, 115, 0.2);
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        .speech-cloud::after {
+            content: '';
+            position: absolute;
+            top: -10px; 
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-top: 3px solid #d4a373;
+            border-left: 3px solid #d4a373;
+            border-top-left-radius: 4px;
+        }
+        
+        .deco { position: absolute; font-size: 12px; }
+        .deco-1 { left: 6px; top: 6px; }
+        .deco-2 { right: 6px; top: -8px; font-size: 14px; }
+        .deco-3 { right: 6px; bottom: 4px; font-size: 10px; }
+        .deco-4 { left: 10px; bottom: -8px; font-size: 14px; }
+
+        /* 멘트 관리 버튼 */
+        .manage-ment-btn {
+            font-family: 'Jua', sans-serif;
+            background-color: #f3e5d0;
+            border: 2px solid #d4a373;
+            border-radius: 10px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: #7a5435;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .manage-ment-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* ---------------- [ 룰렛 뷰 전용 스타일 ] ---------------- */
+        #rouletteView {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .roulette-area {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 10px 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 룰렛 가리키는 핀 */
+        .roulette-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid #e65100;
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        }
+
+        canvas#rouletteCanvas {
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(92, 67, 50, 0.3);
+            border: 4px solid #d4a373;
+            transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
+        }
+
+        .spin-btn {
+            font-family: 'Jua', sans-serif;
+            background-color: #f6c5c8;
+            border: 3px solid #d4a373;
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 16px;
+            color: #5c4332;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #d4a373;
+            margin-bottom: 15px;
+        }
+        .spin-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .roulette-control-box {
+            width: 95%;
+            background-color: #fdf5e6;
+            border: 2px dashed #d4a373;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slot-count-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .count-btn {
+            font-family: 'Jua', sans-serif;
+            background-color: #c5e3d5;
+            border: 2px solid #8fae9f;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b5c49;
+        }
+
+        .roulette-inputs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+            max-height: 120px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .roulette-input-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .roulette-input-item span {
+            font-size: 12px;
+            color: #8c6849;
+            width: 18px;
+        }
+
+        .roulette-input-item input {
+            font-family: 'Jua', sans-serif;
+            flex: 1;
+            padding: 4px 8px;
+            font-size: 13px;
+            border: 2px solid #d4a373;
+            border-radius: 6px;
+            background: #fff;
+            color: #5c4332;
+            outline: none;
+        }
+
+        /* ---------------- [ 모달창 공통 (크롭, 멘트 관리) ] ---------------- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); 
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-box {
+            background-color: #fffbf2;
+            width: 100%;
+            max-width: 380px;
+            border: 4px solid #d4a373;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            text-align: center;
+            color: #5c4332;
+            margin: 0 0 5px 0;
+        }
+
+        .ment-category-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 5px;
+        }
+        .ment-tab-btn {
+            font-family: 'Jua', sans-serif;
+            flex: 1;
+            padding: 6px 0;
+            border: 2px solid #d4a373;
+            background: #fdf5e6;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #5c4332;
+        }
+        .ment-tab-btn.active {
+            background: #d4a373;
+            color: #fff;
+        }
+
+        .ment-list-area {
+            max-height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-right: 4px;
+        }
+
+        .ment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 6px 10px;
+            border: 2px solid #ebd9c0;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .ment-delete-btn {
+            background: #f6c5c8;
+            border: 1px solid #c59b9d;
+            border-radius: 4px;
+            color: #a33;
+            cursor: pointer;
+            font-size: 11px;
+            padding: 2px 6px;
+        }
+
+        .ment-add-row {
+            display: flex;
+            gap: 6px;
+        }
+        .ment-add-row input {
+            font-family: 'Jua', sans-serif;
+            flex: 1;
+            padding: 6px 8px;
+            border: 2px solid #d4a373;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+        .ment-add-btn {
+            font-family: 'Jua', sans-serif;
+            background: #c5e3d5;
+            border: 2px solid #8fae9f;
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            color: #335;
+        }
+
+        .img-container {
+            width: 100%;
+            max-height: 55vh;
+            background-color: #222; 
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .img-container img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+        .modal-buttons button {
+            font-family: 'Jua', sans-serif;
+            font-weight: 400;
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: 3px solid #d4a373;
+            border-radius: 12px;
+            cursor: pointer;
+            background-color: #f3e5d0;
+            color: #5c4332;
+        }
+
+        @media (min-width: 480px) {
+            body {
+                justify-content: center;
+                padding: 30px 10px;
+            }
+            .app-container {
+                margin: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 상단 중앙 모드 전환 스위치 -->
+        <div class="mode-switch">
+            <button class="mode-btn active" id="modeChoiceBtn" onclick="switchMode('choice')">골라 주기 💬</button>
+            <button class="mode-btn" id="modeRouletteBtn" onclick="switchMode('roulette')">룰렛 돌리기 🎯</button>
+        </div>
+
+        <!-- 1. 상단 우드 간판 -->
+        <div class="wood-sign">
+            <div class="nail nail-left"></div>
+            <div class="nail nail-right"></div>
+            이제 고민하지 마! 내가 골라 줄게
+        </div>
+
+        <!-- ================= [ 1. 골라 주기 뷰 (기본) ] ================= -->
+        <div id="choiceView" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <!-- 인덱스 탭 -->
+            <div class="tabs">
+                <button class="tab-btn tab-do" onclick="decide('do')">할/말 🍃</button>
+                <button class="tab-btn tab-buy" onclick="decide('buy')">살/말 👛</button>
+                <button class="tab-btn tab-eat" onclick="decide('eat')">먹/말 🧺</button>
+            </div>
+
+            <!-- 메인 게임 창 -->
+            <div class="game-window">
+                <!-- 포토카드 -->
+                <label for="imageUpload" class="photocard-wrapper" id="photoWrapper">
+                    <div class="upload-text" id="uploadText">
+                        <span class="paw">📸</span>
+                        클릭해서<br>사진 넣기
+                    </div>
+                    <img id="previewImage" alt="최애 포토카드">
+                </label>
+                <input type="file" id="imageUpload" accept="image/*">
+
+                <!-- 구름 말풍선 -->
+                <div class="speech-cloud" id="speechBubble">
+                    <span class="deco deco-1">✨</span>
+                    <span class="deco deco-2">🍎</span>
+                    <span class="deco deco-3">💕</span>
+                    <span class="deco deco-4">🍓</span>
+                    위에 있는 탭을 눌러봐!
+                </div>
+
+                <!-- 멘트 추가/삭제 관리 버튼 -->
+                <button class="manage-ment-btn" onclick="openMentModal()">✏️ 최애 멘트 수정하기</button>
+            </div>
+        </div>
+
+        <!-- ================= [ 2. 룰렛 돌리기 뷰 ] ================= -->
+        <div id="rouletteView">
+            <div class="game-window">
+                <!-- 등록된 포토카드 공유 표시 -->
+                <div class="photocard-wrapper" onclick="document.getElementById('imageUpload').click()" style="margin-bottom: 10px;">
+                    <div class="upload-text" id="rouletteUploadText">
+                        <span class="paw">📸</span>
+                        클릭해서<br>사진 넣기
+                    </div>
+                    <img id="roulettePreviewImage" alt="최애 포토카드">
+                </div>
+
+                <!-- 최애의 응원 말풍선 -->
+                <div class="speech-cloud" id="rouletteSpeech" style="margin-bottom: 10px;">
+                    <span class="deco deco-1">✨</span>
+                    <span class="deco deco-2">🍎</span>
+                    <span class="deco deco-3">💕</span>
+                    <span class="deco deco-4">🍓</span>
+                    내가 룰렛을 힘차게 돌려줄게!
+                </div>
+
+                <!-- 룰렛 영역 -->
+                <div class="roulette-area">
+                    <div class="roulette-pointer"></div>
+                    <canvas id="rouletteCanvas" width="240" height="240"></canvas>
+                </div>
+
+                <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">🎯 룰렛 START!</button>
+
+                <!-- 선택지 설정 컨트롤러 -->
+                <div class="roulette-control-box">
+                    <div class="slot-count-row">
+                        <span>선택지 개수 : <b id="slotCountDisplay">4</b>개</span>
+                        <button class="count-btn" onclick="changeSlotCount(-1)">-</button>
+                        <button class="count-btn" onclick="changeSlotCount(1)">+</button>
+                    </div>
+                    <div class="roulette-inputs-list" id="rouletteInputsList">
+                        <!-- 동적 인풋 생성 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------- [ 멘트 관리 모달창 ] ---------------- -->
+    <div class="modal-overlay" id="mentModal">
+        <div class="modal-box">
+            <h3 class="modal-title">✏️ 최애의 대사 편집</h3>
+            
+            <div class="ment-category-tabs">
+                <button class="ment-tab-btn active" id="mentTab_do" onclick="switchMentTab('do')">할/말</button>
+                <button class="ment-tab-btn" id="mentTab_buy" onclick="switchMentTab('buy')">살/말</button>
+                <button class="ment-tab-btn" id="mentTab_eat" onclick="switchMentTab('eat')">먹/말</button>
+            </div>
+
+            <div class="ment-list-area" id="mentListArea">
+                <!-- 리스트 렌더링 -->
+            </div>
+
+            <div class="ment-add-row">
+                <input type="text" id="newMentInput" placeholder="새 대사 입력..." maxlength="30">
+                <button class="ment-add-btn" onclick="addNewMent()">추가</button>
+            </div>
+
+            <div class="modal-buttons" style="margin-top: 5px;">
+                <button onclick="closeMentModal()">완료</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------- [ 이미지 크롭 모달창 ] ---------------- -->
+    <div class="modal-overlay" id="cropPopup">
+        <div class="modal-box">
+            <div class="img-container">
+                <img id="imageToCrop" src="">
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelCropBtn">취소</button>
+                <button id="applyCropBtn">자르기 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="popSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+    <script>
+        // 공통 포토카드 동기화
+        const imageUpload = document.getElementById('imageUpload');
+        const previewImage = document.getElementById('previewImage');
+        const uploadText = document.getElementById('uploadText');
+        const roulettePreviewImage = document.getElementById('roulettePreviewImage');
+        const rouletteUploadText = document.getElementById('rouletteUploadText');
+        const speechBubble = document.getElementById('speechBubble');
+        const popSound = document.getElementById('popSound');
+
+        // 크롭 관련
+        const cropPopup = document.getElementById('cropPopup');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const cancelCropBtn = document.getElementById('cancelCropBtn');
+        const applyCropBtn = document.getElementById('applyCropBtn');
+        let cropper = null;
+
+        // 1. 초기 데이터 로드 (사진 & 대사)
+        const defaultLists = {
+            do: [
+                "할까 말까 할 때는 해야지",
+                "왠지 고민이 돼? 그럼 잠깐 쉴까?",
+                "그래도 해야지",
+                "좀 더 고민해 보는 게 어때?"
+            ],
+            buy: [
+                "당장 장바구니 ㄱㄱ",
+                "지갑 닫자 통장 운다",
+                "살까 말까 할 땐 사서 남겨",
+                "이 돈 아껴서 나중에 더 좋은 거 사자"
+            ],
+            eat: [
+                "참을 수 있다 ^^",
+                "먹고 죽은 귀신이? 때깔도 곱다",
+                "어~ 안 돼~ 일찍 자~",
+                "뭐 해? 아직 안 시켰어?"
+            ]
+        };
+
+        let currentMentCategory = 'do';
+        let customLists = JSON.parse(localStorage.getItem('customMentLists')) || defaultLists;
+
+        window.onload = function() {
+            const savedImage = localStorage.getItem('biasPhoto');
+            if (savedImage) {
+                setPhoto(savedImage);
+            }
+            initRoulette();
+        };
+
+        function setPhoto(base64) {
+            previewImage.src = base64;
+            previewImage.style.display = 'block';
+            uploadText.style.display = 'none';
+
+            roulettePreviewImage.src = base64;
+            roulettePreviewImage.style.display = 'block';
+            rouletteUploadText.style.display = 'none';
+        }
+
+        // 모드 전환
+        function switchMode(mode) {
+            const choiceView = document.getElementById('choiceView');
+            const rouletteView = document.getElementById('rouletteView');
+            const modeChoiceBtn = document.getElementById('modeChoiceBtn');
+            const modeRouletteBtn = document.getElementById('modeRouletteBtn');
+
+            if (mode === 'choice') {
+                choiceView.style.display = 'flex';
+                rouletteView.style.display = 'none';
+                modeChoiceBtn.classList.add('active');
+                modeRouletteBtn.classList.remove('active');
+            } else {
+                choiceView.style.display = 'none';
+                rouletteView.style.display = 'flex';
+                modeChoiceBtn.classList.remove('active');
+                modeRouletteBtn.classList.add('active');
+                drawRoulette();
+            }
+        }
+
+        // 이미지 크롭 설정
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageToCrop.src = event.target.result;
+                    cropPopup.style.display = 'flex';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: 250 / 360,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.9,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+            e.target.value = '';
+        });
+
+        cancelCropBtn.addEventListener('click', function() {
+            cropPopup.style.display = 'none';
+            if (cropper) cropper.destroy();
+        });
+
+        applyCropBtn.addEventListener('click', function() {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({ width: 500, height: 720 });
+            const croppedBase64 = canvas.toDataURL('image/jpeg', 0.9);
+            setPhoto(croppedBase64);
+            localStorage.setItem('biasPhoto', croppedBase64);
+            cropPopup.style.display = 'none';
+            cropper.destroy();
+        });
+
+        // 슬롯머신 결정 로직
+        let isRolling = false;
+        function decide(type) {
+            if (isRolling) return; 
+            isRolling = true;
+            popSound.currentTime = 0;
+            popSound.play().catch(e => {});
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (type === 'do') document.querySelector('.tab-do').classList.add('active');
+            else if (type === 'buy') document.querySelector('.tab-buy').classList.add('active');
+            else if (type === 'eat') document.querySelector('.tab-eat').classList.add('active');
+
+            let list = customLists[type];
+            if (!list || list.length === 0) list = ["대사를 추가해줘!"];
+
+            let counter = 0;
+            let maxRolls = 12; 
+            let rollInterval = setInterval(() => {
+                let randomText = list[Math.floor(Math.random() * list.length)];
+                speechBubble.innerHTML = `
+                    <span class="deco deco-1">✨</span>
+                    <span class="deco deco-2">🍎</span>
+                    <span class="deco deco-3">💕</span>
+                    <span class="deco deco-4">🍓</span>
+                    ${randomText}
+                `;
+                counter++;
+
+                if (counter >= maxRolls) {
+                    clearInterval(rollInterval);
+                    let finalChoice = list[Math.floor(Math.random() * list.length)];
+                    speechBubble.innerHTML = `
+                        <span class="deco deco-1">✨</span>
+                        <span class="deco deco-2">🍎</span>
+                        <span class="deco deco-3">💕</span>
+                        <span class="deco deco-4">🍓</span>
+                        ${finalChoice}
+                    `;
+                    isRolling = false;
+                }
+            }, 60); 
+        }
+
+        // 멘트 추가/삭제 모달 로직
+        function openMentModal() {
+            document.getElementById('mentModal').style.display = 'flex';
+            renderMentList();
+        }
+
+        function closeMentModal() {
+            document.getElementById('mentModal').style.display = 'none';
+        }
+
+        function switchMentTab(cat) {
+            currentMentCategory = cat;
+            document.querySelectorAll('.ment-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('mentTab_' + cat).classList.add('active');
+            renderMentList();
+        }
+
+        function renderMentList() {
+            const listArea = document.getElementById('mentListArea');
+            listArea.innerHTML = '';
+            const items = customLists[currentMentCategory] || [];
+
+            items.forEach((text, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'ment-item';
+                itemDiv.innerHTML = `
+                    <span>${text}</span>
+                    <button class="ment-delete-btn" onclick="deleteMent(${index})">삭제</button>
+                `;
+                listArea.appendChild(itemDiv);
+            });
+        }
+
+        function addNewMent() {
+            const input = document.getElementById('newMentInput');
+            const val = input.value.trim();
+            if (!val) return;
+
+            customLists[currentMentCategory].push(val);
+            localStorage.setItem('customMentLists', JSON.stringify(customLists));
+            input.value = '';
+            renderMentList();
+        }
+
+        function deleteMent(index) {
+            customLists[currentMentCategory].splice(index, 1);
+            localStorage.setItem('customMentLists', JSON.stringify(customLists));
+            renderMentList();
+        }
+
+        // ================= [ 룰렛 로직 ] =================
+        let rouletteSlots = ["선택지 1", "선택지 2", "선택지 3", "선택지 4"];
+        const rouletteColors = ["#c5e3d5", "#f6c5c8", "#fce19a", "#bae6fd", "#e8d5f5", "#fed7aa"];
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        function initRoulette() {
+            renderRouletteInputs();
+            drawRoulette();
+        }
+
+        function changeSlotCount(delta) {
+            if (isSpinning) return;
+            let newCount = rouletteSlots.length + delta;
+            if (newCount < 2 || newCount > 6) return;
+
+            if (delta > 0) {
+                rouletteSlots.push(`선택지 ${newCount}`);
+            } else {
+                rouletteSlots.pop();
+            }
+
+            document.getElementById('slotCountDisplay').innerText = rouletteSlots.length;
+            renderRouletteInputs();
+            drawRoulette();
+        }
+
+        function renderRouletteInputs() {
+            const container = document.getElementById('rouletteInputsList');
+            container.innerHTML = '';
+            document.getElementById('slotCountDisplay').innerText = rouletteSlots.length;
+
+            rouletteSlots.forEach((val, i) => {
+                const row = document.createElement('div');
+                row.className = 'roulette-input-item';
+                row.innerHTML = `
+                    <span>${i+1}</span>
+                    <input type="text" value="${val}" placeholder="내용 입력..." oninput="updateSlotText(${i}, this.value)">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function updateSlotText(index, value) {
+            rouletteSlots[index] = value;
+            drawRoulette();
+        }
+
+        function drawRoulette() {
+            const canvas = document.getElementById('rouletteCanvas');
+            const ctx = canvas.getContext('2d');
+            const numSlots = rouletteSlots.length;
+            const arc = (2 * Math.PI) / numSlots;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSlots; i++) {
+                const angle = i * arc;
+                ctx.beginPath();
+                ctx.fillStyle = rouletteColors[i % rouletteColors.length];
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, angle, angle + arc);
+                ctx.fill();
+                ctx.stroke();
+
+                // 텍스트 그리기
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#5c4332';
+                ctx.font = '14px Jua';
+                const text = rouletteSlots[i] || '';
+                ctx.fillText(text.length > 6 ? text.substring(0, 5) + '..' : text, radius - 15, 5);
+                ctx.restore();
+            }
+
+            // 가운데 원 데코
+            ctx.beginPath();
+            ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fffbf2';
+            ctx.fill();
+            ctx.strokeStyle = '#d4a373';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // 가운데 발바닥
+            ctx.fillStyle = '#d4a373';
+            ctx.font = '14px Jua';
+            ctx.textAlign = 'center';
+            ctx.fillText('🐾', radius, radius + 5);
+        }
+
+        function spinRoulette() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const rouletteSpeech = document.getElementById('rouletteSpeech');
+            rouletteSpeech.innerHTML = `
+                <span class="deco deco-1">✨</span>
+                <span class="deco deco-2">🍎</span>
+                <span class="deco deco-3">💕</span>
+                <span class="deco deco-4">🍓</span>
+                과연 최애의 선택은...?! 🌀
+            `;
+
+            popSound.currentTime = 0;
+            popSound.play().catch(e => {});
+
+            const canvas = document.getElementById('rouletteCanvas');
+            const numSlots = rouletteSlots.length;
+            
+            // 랜덤 바퀴 수 + 랜덤 슬롯 결정
+            const randomSpin = Math.floor(Math.random() * 360) + 1800; // 최소 5바퀴
+            currentRotation += randomSpin;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                // 당첨 인덱스 계산 (상단 핀 기준 - 270도/위쪽 방향)
+                const actualDeg = currentRotation % 360;
+                const arcDeg = 360 / numSlots;
+                // 위쪽 핀(270도)에 걸리는 슬롯 계산
+                let winningIndex = Math.floor((360 - (actualDeg % 360) + 270) % 360 / arcDeg);
+                let winnerText = rouletteSlots[winningIndex] || "선택 완료!";
+
+                rouletteSpeech.innerHTML = `
+                    <span class="deco deco-1">✨</span>
+                    <span class="deco deco-2">🍎</span>
+                    <span class="deco deco-3">💕</span>
+                    <span class="deco deco-4">🍓</span>
+                    최애의 선택은 바로 <strong>[${winnerText}]</strong>! 🎉
+                `;
+                isSpinning = false;
+            }, 4000); // 회전 시간 4초
+        }
+    </script>
+</body>
+</html>
