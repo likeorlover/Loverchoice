@@ -4,33 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>이제 고민하지 마! 내가 골라 줄게</title>
-    <!-- 귀여운 둥근 폰트 (Jua) -->
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- 다국어 지원 귀여운 둥근 폰트 스택 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <!-- 이미지 크롭 라이브러리 (Cropper.js) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ---------------- [ 테마 CSS 변수 설정 ] ---------------- */
+        :root {
+            --bg-base: #fdf5e6;
+            --bg-image: linear-gradient(90deg, rgba(162, 212, 195, 0.25) 50%, transparent 50%), linear-gradient(rgba(243, 178, 185, 0.25) 50%, transparent 50%);
+            --bg-size: 50px 50px;
+            --text-main: #5c4332;
+            --text-sub: #a87e5b;
+            --primary-border: #d4a373;
+            --window-bg: #fffbf2;
+            --speech-bg: #ffffff;
+            --switch-bg: #ebd9c0;
+            --switch-border: #d4a373;
+            --wood-bg: #d4a373;
+            --wood-border: #ab7a4b;
+            --wood-text: #ffffff;
+            --tab-1: #c5e3d5;
+            --tab-2: #f6c5c8;
+            --tab-3: #fce19a;
+            --canvas-center: #fffbf2;
+            --nail-bg: #78716c;
+            --stick-bg: #a87e5b;
+            --stick-border: #8c5a2b;
+            --spin-bg: #f6c5c8;
+            --spin-text: #5c4332;
+            --photo-bg: #fdf5e6;
+            
+            /* 액션 버튼 및 컨트롤 박스 등 */
+            --action-btn-bg: #fdf5e6;
+            --action-btn-text: #7a5435;
+            --control-box-bg: #fdf5e6;
+            --control-box-text: #5c4332;
+            --theme-btn-bg: #fdf5e6;
+            --theme-btn-text: #5c4332;
+            
+            /* 상단 버튼 */
+            --top-btn-bg: #fffbf2;
+            --top-btn-text: #5c4332;
+            --top-btn-border: #d4a373;
+        }
+
+        [data-theme="angel-demon"] {
+            --bg-base: #000000; 
+            --bg-image: none; 
+            --bg-size: auto;
+            --text-main: #000000; 
+            --text-sub: #555555;
+            --primary-border: #000000; 
+            --window-bg: #ffffff;
+            --speech-bg: #ffffff;
+            --switch-bg: #000000;
+            --switch-border: #ffffff;
+            --wood-bg: #000000;
+            --wood-border: #ffffff;
+            --wood-text: #ffffff;
+            --tab-1: #ffffff;
+            --tab-2: #ffffff;
+            --tab-3: #ffffff;
+            --canvas-center: #ffffff;
+            --nail-bg: #aaaaaa;
+            --stick-bg: #000000;
+            --stick-border: #ffffff;
+            --spin-bg: #000000;
+            --spin-text: #ffffff;
+            --photo-bg: #ffffff;
+
+            /* 천사악마 테마 다크 모드 포인트 */
+            --action-btn-bg: #000000;
+            --action-btn-text: #ffffff;
+            --action-btn-border: #ffffff;
+            --control-box-bg: #000000;
+            --control-box-text: #ffffff;
+            --control-box-border: #ffffff;
+            --theme-btn-bg: #000000;
+            --theme-btn-text: #ffffff;
+            --theme-btn-border: #ffffff;
+            --top-btn-bg: #000000;
+            --top-btn-text: #ffffff;
+            --top-btn-border: #ffffff;
+            --spin-border: #ffffff;
+        }
+
+        [data-theme="pink"] {
+            --bg-base: #ffe4e8; 
+            --bg-image: none; 
+            --bg-size: auto;
+            --text-main: #b03060;
+            --text-sub: #d87093;
+            --primary-border: #f48fb1;
+            --window-bg: #fffafa;
+            --speech-bg: #ffffff;
+            --switch-bg: #fce4ec;
+            --switch-border: #f48fb1;
+            --wood-bg: #ff69b4;
+            --wood-border: #db7093;
+            --wood-text: #ffffff;
+            --tab-1: #ffb6c1;
+            --tab-2: #ffc0cb;
+            --tab-3: #ffe4e1;
+            --canvas-center: #fffafa;
+            --nail-bg: #c71585;
+            --stick-bg: #ffb6c1;
+            --stick-border: #db7093;
+            --spin-bg: #f48fb1;
+            --spin-text: #ffffff;
+            --photo-bg: #fff0f5;
+
+            --action-btn-bg: #fff0f5;
+            --action-btn-text: #b03060;
+            --control-box-bg: #fff0f5;
+            --control-box-text: #b03060;
+            --theme-btn-bg: #fff0f5;
+            --theme-btn-text: #b03060;
+            --top-btn-bg: #fffafa;
+            --top-btn-text: #b03060;
+            --top-btn-border: #f48fb1;
+        }
+
+        [data-theme="custom"] {
+            --bg-base: var(--user-bg-color, #fcfcfc); 
+            --bg-image: none;
+            --bg-size: auto;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --primary-border: var(--user-color, #9e9e9e);
+            --window-bg: #ffffff;
+            --speech-bg: #ffffff;
+            --switch-bg: #eeeeee;
+            --switch-border: var(--user-color, #9e9e9e);
+            --wood-bg: var(--user-color, #9e9e9e);
+            --wood-border: var(--user-color, #757575);
+            --wood-text: #ffffff;
+            --tab-1: #ffffff;
+            --tab-2: #f5f5f5;
+            --tab-3: #e0e0e0;
+            --canvas-center: #ffffff;
+            --nail-bg: #999999;
+            --stick-bg: #dddddd;
+            --stick-border: #aaaaaa;
+            --spin-bg: var(--user-color, #9e9e9e);
+            --spin-text: #ffffff;
+            --photo-bg: var(--user-bg-color, #fcfcfc);
+
+            --action-btn-bg: var(--user-bg-color, #fcfcfc);
+            --action-btn-text: #333333;
+            --control-box-bg: var(--user-bg-color, #fcfcfc);
+            --control-box-text: #333333;
+            --theme-btn-bg: var(--user-bg-color, #fcfcfc);
+            --theme-btn-text: #333333;
+            --top-btn-bg: #ffffff;
+            --top-btn-text: #333333;
+            --top-btn-border: var(--user-color, #9e9e9e);
+        }
+
+        body, button, input, select {
+            font-family: 'Nunito', 'Gowun Dodum', 'M PLUS Rounded 1c', 'Noto Sans SC', sans-serif;
+            font-weight: 700; 
         }
 
         body {
-            background-color: #fdf5e6;
-            background-image: 
-                linear-gradient(90deg, rgba(162, 212, 195, 0.25) 50%, transparent 50%),
-                linear-gradient(rgba(243, 178, 185, 0.25) 50%, transparent 50%);
-            background-size: 50px 50px;
-            color: #5c4332;
-            font-family: 'Jua', sans-serif;
-            font-weight: 400; 
+            background-color: var(--bg-base);
+            background-image: var(--bg-image);
+            background-size: var(--bg-size);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; 
             min-height: 100vh;
             margin: 0;
-            padding: 10px 10px 30px 10px; 
+            padding: 10px 10px 40px 10px; 
             overflow-x: hidden;
+            transition: background-color 0.3s;
         }
         
         .app-container {
@@ -43,83 +199,69 @@
             margin: 0 auto; 
         }
 
-        /* ---------------- [ 모드 전환 스위치 (상단 중앙) ] ---------------- */
+        /* ---------------- [ 상단 네비게이션 ] ---------------- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            padding: 0 5px;
+            z-index: 20;
+            gap: 8px;
+        }
+
+        .icon-btn, .lang-selector select {
+            background-color: var(--top-btn-bg);
+            border: 2px solid var(--top-btn-border, var(--primary-border));
+            color: var(--top-btn-text);
+            border-radius: 10px;
+            padding: 4px 6px;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 2px 0 var(--top-btn-border, var(--primary-border));
+            transition: all 0.1s;
+        }
+        .icon-btn:active, .lang-selector select:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        /* 모드 전환 스위치 */
+        .mode-switch-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
         .mode-switch {
             display: flex;
-            background-color: #ebd9c0;
+            background-color: var(--switch-bg);
             padding: 4px;
             border-radius: 20px;
-            border: 2px solid #d4a373;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            border: 2px solid var(--switch-border);
             gap: 4px;
-            z-index: 20;
         }
 
         .mode-btn {
-            font-family: 'Jua', sans-serif;
             border: none;
             background: transparent;
-            padding: 6px 16px;
+            padding: 6px 16px; 
             border-radius: 16px;
-            font-size: 14px;
-            color: #8c6849;
+            font-size: 14px; 
+            color: var(--text-sub);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .mode-btn.active {
-            background-color: #fffbf2;
-            color: #5c4332;
+            background-color: var(--window-bg);
+            color: var(--text-main);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            font-weight: bold;
         }
-
-        /* ---------------- [ 상단 우드 간판 ] ---------------- */
-        .wood-sign {
-            background-color: #d4a373;
-            color: #fff;
-            padding: 6px 35px; 
-            border-radius: 10px; 
-            font-size: 14px; 
-            text-shadow: 1px 1px 0px #ab7a4b;
-            border: 2px solid #ab7a4b;
-            margin-top: 18px; 
-            margin-bottom: 15px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 4px 0px rgba(212, 163, 115, 0.2); 
-        }
-        
-        .wood-sign::before, .wood-sign::after {
-            content: '';
-            position: absolute;
-            top: -18px; 
-            width: 8px;
-            height: 18px;
-            background-color: #a87e5b; 
-            border: 2px solid #8c5a2b; 
-            border-bottom: none; 
-            z-index: -1; 
-        }
-        .wood-sign::before { left: 20px; }
-        .wood-sign::after { right: 20px; }
-
-        .nail {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: #78716c; 
-            border-radius: 50%;
-            top: 5px;
-            box-shadow: inset 1px 1px 0px rgba(255,255,255,0.4), 1px 1px 1px rgba(0,0,0,0.3);
-        }
-        .nail-left { left: 21px; }
-        .nail-right { right: 21px; }
 
         /* ---------------- [ 인덱스 탭 ] ---------------- */
         .tabs {
@@ -133,12 +275,10 @@
         }
 
         .tab-btn {
-            font-family: 'Jua', sans-serif;
-            font-weight: 400;
             flex: 1;
             padding: 8px 2px 12px 2px; 
             font-size: 13px; 
-            border: 2px solid #d4a373;
+            border: 2px solid var(--primary-border);
             border-bottom: none;
             border-radius: 10px 10px 0 0;
             cursor: pointer;
@@ -148,9 +288,11 @@
             gap: 2px;
             transition: all 0.2s ease-in-out;
             box-shadow: inset 0 3px 0px rgba(255, 255, 255, 0.4);
-            color: #5c4332;
+            color: var(--text-main);
             position: relative;
             z-index: 1;
+            height: 40px; 
+            white-space: nowrap; 
         }
         
         .tab-btn.active {
@@ -159,22 +301,23 @@
             z-index: 5;
             box-shadow: inset 0 4px 0px rgba(255, 255, 255, 0.6), 0 -2px 5px rgba(0,0,0,0.05);
             font-size: 13.5px; 
+            height: 44px; 
         }
 
-        .tab-do { background-color: #c5e3d5; } 
-        .tab-buy { background-color: #f6c5c8; }
-        .tab-eat { background-color: #fce19a; }
+        .tab-do { background-color: var(--tab-1); } 
+        .tab-buy { background-color: var(--tab-2); }
+        .tab-eat { background-color: var(--tab-3); }
 
         /* ---------------- [ 메인 게임 창 ] ---------------- */
         .game-window {
-            background-color: #fffbf2;
+            background-color: var(--window-bg);
             padding: 15px 12px 18px; 
             width: 100%;
-            border: 3px solid #d4a373;
+            border: 3px solid var(--primary-border);
             border-radius: 16px;
             box-shadow: 
-                inset 0 0 0 5px #f4e8d3,
-                0 6px 0px rgba(212, 163, 115, 0.3);
+                inset 0 0 0 5px rgba(255,255,255,0.3),
+                0 6px 0px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -186,8 +329,8 @@
         .photocard-wrapper {
             width: 250px; 
             height: 360px; 
-            background-color: #fdf5e6;
-            border: 6px solid #d4a373;
+            background-color: var(--photo-bg);
+            border: 6px solid var(--primary-border);
             border-radius: 14px;
             display: flex;
             flex-direction: column;
@@ -196,13 +339,11 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 6px rgba(92, 67, 50, 0.2), 3px 3px 0 rgba(212, 163, 115, 0.3);
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.1), 3px 3px 0 rgba(0,0,0,0.1);
             transition: transform 0.2s;
             margin-bottom: 15px; 
         }
-        .photocard-wrapper:hover {
-            transform: rotate(-2deg) scale(1.02);
-        }
+        .photocard-wrapper:hover { transform: rotate(-2deg) scale(1.02); }
         .photocard-wrapper img {
             width: 100%;
             height: 100%;
@@ -211,7 +352,8 @@
             border-radius: 4px;
         }
         .upload-text {
-            color: #a87e5b;
+            color: var(--text-main);
+            opacity: 0.7;
             font-size: 15px;
             text-align: center;
             line-height: 1.3;
@@ -220,22 +362,28 @@
             align-items: center;
             gap: 4px;
         }
-        .upload-text .paw {
-            font-size: 28px;
-        }
-        input[type="file"] {
-            display: none;
+        .upload-text .paw { font-size: 28px; }
+        
+        .file-input-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
         }
 
         /* 구름 말풍선 */
         .speech-cloud {
             position: relative;
-            background: #ffffff;
-            color: #5c4332;
+            background: var(--speech-bg);
+            color: var(--text-main);
             font-size: 15px; 
             padding: 10px 12px; 
             width: 90%;
-            border: 3px solid #d4a373;
+            border: 3px solid var(--primary-border);
             border-radius: 16px 10px 16px 10px;
             text-align: center;
             min-height: 40px; 
@@ -243,9 +391,9 @@
             align-items: center;
             justify-content: center;
             word-break: keep-all;
-            box-shadow: 2px 2px 0px rgba(212, 163, 115, 0.2);
-            line-height: 1.2;
-            margin-bottom: 10px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+            line-height: 1.3;
+            margin-bottom: 5px;
         }
         .speech-cloud::after {
             content: '';
@@ -255,9 +403,9 @@
             transform: translateX(-50%) rotate(45deg);
             width: 10px;
             height: 10px;
-            background-color: #ffffff;
-            border-top: 3px solid #d4a373;
-            border-left: 3px solid #d4a373;
+            background-color: var(--speech-bg);
+            border-top: 3px solid var(--primary-border);
+            border-left: 3px solid var(--primary-border);
             border-top-left-radius: 4px;
         }
         
@@ -267,20 +415,41 @@
         .deco-3 { right: 6px; bottom: 4px; font-size: 10px; }
         .deco-4 { left: 10px; bottom: -8px; font-size: 14px; }
 
-        /* 멘트 관리 버튼 */
-        .manage-ment-btn {
-            font-family: 'Jua', sans-serif;
-            background-color: #f3e5d0;
-            border: 2px solid #d4a373;
-            border-radius: 10px;
-            padding: 4px 12px;
-            font-size: 12px;
-            color: #7a5435;
-            cursor: pointer;
-            transition: all 0.1s;
+        /* 하단 액션 버튼 그룹 */
+        .bottom-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
         }
-        .manage-ment-btn:active {
-            transform: translateY(2px);
+
+        .retry-btn, .manage-ment-btn {
+            background-color: var(--action-btn-bg);
+            border: 2px solid var(--action-btn-border, var(--primary-border));
+            color: var(--action-btn-text);
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--action-btn-border, var(--primary-border));
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .retry-btn {
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+        }
+        .manage-ment-btn {
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .retry-btn:active, .manage-ment-btn:active {
+            transform: translateY(3px);
+            box-shadow: none;
         }
 
         /* ---------------- [ 룰렛 뷰 전용 스타일 ] ---------------- */
@@ -293,15 +462,14 @@
 
         .roulette-area {
             position: relative;
-            width: 250px;
-            height: 250px;
+            width: 220px; 
+            height: 220px;
             margin: 10px 0 15px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* 룰렛 가리키는 핀 */
         .roulette-pointer {
             position: absolute;
             top: -12px;
@@ -311,29 +479,31 @@
             height: 0;
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
-            border-top: 20px solid #e65100;
+            border-top: 20px solid var(--primary-border); 
             z-index: 10;
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
         }
 
         canvas#rouletteCanvas {
+            width: 220px; 
+            height: 220px;
             border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(92, 67, 50, 0.3);
-            border: 4px solid #d4a373;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 4px solid var(--primary-border);
             transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
         }
 
         .spin-btn {
-            font-family: 'Jua', sans-serif;
-            background-color: #f6c5c8;
-            border: 3px solid #d4a373;
+            background-color: var(--spin-bg);
+            border: 3px solid var(--spin-border, var(--primary-border));
             border-radius: 20px;
             padding: 8px 24px;
             font-size: 16px;
-            color: #5c4332;
+            color: var(--spin-text);
             cursor: pointer;
-            box-shadow: 0 4px 0 #d4a373;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 0 var(--spin-border, var(--primary-border));
+            margin-bottom: 0;
+            transition: all 0.1s;
         }
         .spin-btn:active {
             transform: translateY(4px);
@@ -342,27 +512,27 @@
 
         .roulette-control-box {
             width: 95%;
-            background-color: #fdf5e6;
-            border: 2px dashed #d4a373;
+            background-color: var(--control-box-bg);
+            border: 2px dashed var(--control-box-border, var(--primary-border));
             border-radius: 12px;
-            padding: 10px;
+            padding: 15px 12px; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            color: var(--control-box-text);
         }
 
         .slot-count-row {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .count-btn {
-            font-family: 'Jua', sans-serif;
-            background-color: #c5e3d5;
-            border: 2px solid #8fae9f;
+            background-color: var(--action-btn-bg);
+            border: 2px solid var(--primary-border);
             border-radius: 6px;
             width: 28px;
             height: 28px;
@@ -371,44 +541,43 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #3b5c49;
+            color: var(--action-btn-text);
         }
 
         .roulette-inputs-list {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
             width: 100%;
-            max-height: 120px;
+            max-height: 180px; 
             overflow-y: auto;
-            padding-right: 2px;
+            padding-right: 4px;
         }
 
         .roulette-input-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .roulette-input-item span {
-            font-size: 12px;
-            color: #8c6849;
-            width: 18px;
+            font-size: 14px;
+            width: 20px;
         }
 
         .roulette-input-item input {
-            font-family: 'Jua', sans-serif;
             flex: 1;
-            padding: 4px 8px;
-            font-size: 13px;
-            border: 2px solid #d4a373;
-            border-radius: 6px;
-            background: #fff;
-            color: #5c4332;
+            padding: 8px 10px; 
+            font-size: 14px; 
+            border: 2px solid var(--primary-border);
+            border-radius: 8px;
+            background: var(--speech-bg);
+            color: var(--text-main);
             outline: none;
+            font-family: inherit;
         }
 
-        /* ---------------- [ 모달창 공통 (크롭, 멘트 관리) ] ---------------- */
+        /* ---------------- [ 모달창 공통 ] ---------------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -420,10 +589,10 @@
             padding: 20px;
         }
         .modal-box {
-            background-color: #fffbf2;
+            background-color: var(--window-bg);
             width: 100%;
             max-width: 380px;
-            border: 4px solid #d4a373;
+            border: 4px solid var(--primary-border);
             border-radius: 20px;
             padding: 20px;
             display: flex;
@@ -435,9 +604,23 @@
         .modal-title {
             font-size: 18px;
             text-align: center;
-            color: #5c4332;
+            color: var(--text-main);
             margin: 0 0 5px 0;
         }
+
+        .theme-btn {
+            background: var(--theme-btn-bg);
+            border: 2px solid var(--theme-btn-border, var(--primary-border));
+            color: var(--theme-btn-text);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 8px;
+            transition: 0.1s;
+        }
+        .theme-btn:active { transform: translateY(2px); }
 
         .ment-category-tabs {
             display: flex;
@@ -445,19 +628,19 @@
             margin-bottom: 5px;
         }
         .ment-tab-btn {
-            font-family: 'Jua', sans-serif;
             flex: 1;
             padding: 6px 0;
-            border: 2px solid #d4a373;
-            background: #fdf5e6;
+            border: 2px solid var(--primary-border);
+            background: var(--speech-bg);
             border-radius: 8px;
             font-size: 13px;
             cursor: pointer;
-            color: #5c4332;
+            color: var(--text-main);
+            font-family: inherit;
         }
         .ment-tab-btn.active {
-            background: #d4a373;
-            color: #fff;
+            background: var(--primary-border);
+            color: var(--window-bg);
         }
 
         .ment-list-area {
@@ -473,18 +656,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fff;
+            background: var(--speech-bg);
             padding: 6px 10px;
-            border: 2px solid #ebd9c0;
+            border: 2px solid var(--switch-bg);
             border-radius: 8px;
             font-size: 13px;
+            color: var(--text-main);
         }
 
         .ment-delete-btn {
-            background: #f6c5c8;
-            border: 1px solid #c59b9d;
+            background: var(--tab-2);
+            border: 1px solid var(--primary-border);
             border-radius: 4px;
-            color: #a33;
+            color: var(--text-main);
             cursor: pointer;
             font-size: 11px;
             padding: 2px 6px;
@@ -495,22 +679,24 @@
             gap: 6px;
         }
         .ment-add-row input {
-            font-family: 'Jua', sans-serif;
             flex: 1;
             padding: 6px 8px;
-            border: 2px solid #d4a373;
+            border: 2px solid var(--primary-border);
             border-radius: 8px;
             font-size: 13px;
             outline: none;
+            font-family: inherit;
+            background: var(--speech-bg);
+            color: var(--text-main);
         }
         .ment-add-btn {
-            font-family: 'Jua', sans-serif;
-            background: #c5e3d5;
-            border: 2px solid #8fae9f;
+            background: var(--tab-1);
+            border: 2px solid var(--primary-border);
             border-radius: 8px;
             padding: 6px 12px;
             cursor: pointer;
-            color: #335;
+            color: var(--text-main);
+            font-family: inherit;
         }
 
         .img-container {
@@ -534,64 +720,73 @@
             width: 100%;
         }
         .modal-buttons button {
-            font-family: 'Jua', sans-serif;
-            font-weight: 400;
             flex: 1;
             padding: 8px;
             font-size: 16px;
-            border: 3px solid #d4a373;
+            border: 3px solid var(--primary-border);
             border-radius: 12px;
             cursor: pointer;
-            background-color: #f3e5d0;
-            color: #5c4332;
+            background-color: var(--tab-3);
+            color: var(--text-main);
+            font-family: inherit;
         }
 
+        /* ---------------- [ PC / 태블릿 화면 ] ---------------- */
         @media (min-width: 480px) {
-            body {
-                justify-content: center;
-                padding: 30px 10px;
-            }
-            .app-container {
-                margin: auto;
-            }
+            body { justify-content: center; padding: 30px 10px; }
+            .app-container { margin: auto; }
+            .mode-btn { padding: 6px 20px; font-size: 15px; }
+            .photocard-wrapper { width: 250px; height: 360px; }
+            .top-nav { margin-bottom: 25px; padding: 0 10px; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- 상단 중앙 모드 전환 스위치 -->
-        <div class="mode-switch">
-            <button class="mode-btn active" id="modeChoiceBtn" onclick="switchMode('choice')">골라 주기 💬</button>
-            <button class="mode-btn" id="modeRouletteBtn" onclick="switchMode('roulette')">룰렛 돌리기 🎯</button>
+
+        <!-- ================= [ 상단 네비게이션 (테마/언어) ] ================= -->
+        <div class="top-nav">
+            <div class="nav-controls">
+                <button class="icon-btn" onclick="openThemeModal()">🎨</button>
+                <div class="lang-selector" style="position:static;">
+                    <select id="langSelect" onchange="changeLang(this.value)">
+                        <option value="ko">🇰🇷</option>
+                        <option value="en">🇺🇸</option>
+                        <option value="ja">🇯🇵</option>
+                        <option value="zh">🇨🇳</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <!-- 1. 상단 우드 간판 -->
-        <div class="wood-sign">
-            <div class="nail nail-left"></div>
-            <div class="nail nail-right"></div>
-            이제 고민하지 마! 내가 골라 줄게
+        <!-- ================= [ 모드 전환 스위치 (단독 라인) ] ================= -->
+        <div class="mode-switch-container">
+            <div class="mode-switch">
+                <button class="mode-btn active" id="switchBtnChoice" onclick="switchMode('choice')">골라 주기 💬</button>
+                <button class="mode-btn" id="switchBtnRoulette" onclick="switchMode('roulette')">룰렛 돌리기 🎯</button>
+            </div>
         </div>
 
-        <!-- ================= [ 1. 골라 주기 뷰 (기본) ] ================= -->
-        <div id="choiceView" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <!-- ================= [ 1. 골라 주기 뷰 ] ================= -->
+        <div id="choiceView" style="display: flex; width: 100%; flex-direction: column; align-items: center;">
             <!-- 인덱스 탭 -->
             <div class="tabs">
-                <button class="tab-btn tab-do" onclick="decide('do')">할/말 🍃</button>
-                <button class="tab-btn tab-buy" onclick="decide('buy')">살/말 👛</button>
-                <button class="tab-btn tab-eat" onclick="decide('eat')">먹/말 🧺</button>
+                <button class="tab-btn tab-do" id="tabDo" onclick="decide('do')">할/말 🍃</button>
+                <button class="tab-btn tab-buy" id="tabBuy" onclick="decide('buy')">살/말 👛</button>
+                <button class="tab-btn tab-eat" id="tabEat" onclick="decide('eat')">먹/말 🧺</button>
             </div>
 
             <!-- 메인 게임 창 -->
             <div class="game-window">
                 <!-- 포토카드 -->
-                <label for="imageUpload" class="photocard-wrapper" id="photoWrapper">
-                    <div class="upload-text" id="uploadText">
+                <label for="imageUploadChoice" class="photocard-wrapper">
+                    <div class="upload-text upload-text-choice">
                         <span class="paw">📸</span>
-                        클릭해서<br>사진 넣기
+                        <span id="uploadTxtSpanChoice">클릭해서<br>사진 넣기</span>
                     </div>
-                    <img id="previewImage" alt="최애 포토카드">
+                    <img class="preview-img-choice" alt="최애 포토카드">
                 </label>
-                <input type="file" id="imageUpload" accept="image/*">
+                <input type="file" id="imageUploadChoice" accept="image/*" class="file-input-hidden">
 
                 <!-- 구름 말풍선 -->
                 <div class="speech-cloud" id="speechBubble">
@@ -599,47 +794,54 @@
                     <span class="deco deco-2">🍎</span>
                     <span class="deco deco-3">💕</span>
                     <span class="deco deco-4">🍓</span>
-                    위에 있는 탭을 눌러봐!
+                    <span id="bubbleTextChoice">위에 있는 탭을 눌러봐!</span>
                 </div>
+            </div>
 
-                <!-- 멘트 추가/삭제 관리 버튼 -->
-                <button class="manage-ment-btn" onclick="openMentModal()">✏️ 최애 멘트 수정하기</button>
+            <!-- 하단 액션: 멘트 수정 & 다시 돌리기 -->
+            <div class="bottom-actions">
+                <button class="manage-ment-btn" id="manageMentBtnText" onclick="openMentModal()">✏️ 최애 멘트 수정하기</button>
+                <button class="retry-btn" onclick="retryDecide()" title="다시 돌리기">🔄</button>
             </div>
         </div>
 
         <!-- ================= [ 2. 룰렛 돌리기 뷰 ] ================= -->
-        <div id="rouletteView">
+        <div id="rouletteView" style="display: none; width: 100%; flex-direction: column; align-items: center;">
             <div class="game-window">
                 <!-- 등록된 포토카드 공유 표시 -->
-                <div class="photocard-wrapper" onclick="document.getElementById('imageUpload').click()" style="margin-bottom: 10px;">
-                    <div class="upload-text" id="rouletteUploadText">
+                <div class="photocard-wrapper" onclick="document.getElementById('imageUploadRoulette').click()" style="margin-bottom: 10px;">
+                    <div class="upload-text upload-text-roulette">
                         <span class="paw">📸</span>
-                        클릭해서<br>사진 넣기
+                        <span id="uploadTxtSpanRoulette">클릭해서<br>사진 넣기</span>
                     </div>
-                    <img id="roulettePreviewImage" alt="최애 포토카드">
+                    <img class="preview-img-roulette" alt="최애 포토카드">
                 </div>
+                <input type="file" id="imageUploadRoulette" accept="image/*" class="file-input-hidden">
 
                 <!-- 최애의 응원 말풍선 -->
-                <div class="speech-cloud" id="rouletteSpeech" style="margin-bottom: 10px;">
+                <div class="speech-cloud" id="rouletteSpeech" style="margin-bottom: 15px;">
                     <span class="deco deco-1">✨</span>
                     <span class="deco deco-2">🍎</span>
                     <span class="deco deco-3">💕</span>
                     <span class="deco deco-4">🍓</span>
-                    내가 룰렛을 힘차게 돌려줄게!
+                    <span id="bubbleTextRoulette">내가 룰렛을 힘차게 돌려 줄게!</span>
                 </div>
 
                 <!-- 룰렛 영역 -->
                 <div class="roulette-area">
                     <div class="roulette-pointer"></div>
-                    <canvas id="rouletteCanvas" width="240" height="240"></canvas>
+                    <canvas id="rouletteCanvas" width="220" height="220"></canvas>
                 </div>
 
-                <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">🎯 룰렛 START!</button>
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                    <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">🎯 룰렛 START!</button>
+                    <button class="retry-btn" onclick="resetRoulette()" style="margin: 0; width: 40px; height: 40px;" title="초기화">🔄</button>
+                </div>
 
                 <!-- 선택지 설정 컨트롤러 -->
                 <div class="roulette-control-box">
                     <div class="slot-count-row">
-                        <span>선택지 개수 : <b id="slotCountDisplay">4</b>개</span>
+                        <span id="slotTxt1">선택지 개수 : </span><b id="slotCountDisplay">4</b><span id="slotTxt2">개</span>
                         <button class="count-btn" onclick="changeSlotCount(-1)">-</button>
                         <button class="count-btn" onclick="changeSlotCount(1)">+</button>
                     </div>
@@ -651,15 +853,34 @@
         </div>
     </div>
 
+    <!-- ---------------- [ 테마 선택 모달창 ] ---------------- -->
+    <div class="modal-overlay" id="themeModal">
+        <div class="modal-box">
+            <h3 class="modal-title" id="themeModalTitle">🎨 테마 설정</h3>
+            <div>
+                <button class="theme-btn" onclick="changeTheme('animal')" id="themeBtnAnimal">🍃 동물의 숲</button>
+                <button class="theme-btn" onclick="changeTheme('angel-demon')" id="themeBtnAngel">👼 천사와 악마</button>
+                <button class="theme-btn" onclick="changeTheme('pink')" id="themeBtnPink">🎀 핑크핑크</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="theme-btn" onclick="changeTheme('custom')" id="themeBtnCustom" style="flex:1; margin-bottom:0;">🎨 커스텀 컬러</button>
+                    <input type="color" id="customColorPicker" onchange="updateCustomColor(this.value)" value="#9e9e9e" style="width:40px; height:40px; border-radius:8px; border:2px solid var(--primary-border); cursor:pointer;">
+                </div>
+            </div>
+            <div class="modal-buttons" style="margin-top: 15px;">
+                <button onclick="closeThemeModal()" id="themeCloseBtn">닫기</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ---------------- [ 멘트 관리 모달창 ] ---------------- -->
     <div class="modal-overlay" id="mentModal">
         <div class="modal-box">
-            <h3 class="modal-title">✏️ 최애의 대사 편집</h3>
+            <h3 class="modal-title" id="mentModalTitle">✏️ 최애의 대사 편집</h3>
             
             <div class="ment-category-tabs">
-                <button class="ment-tab-btn active" id="mentTab_do" onclick="switchMentTab('do')">할/말</button>
-                <button class="ment-tab-btn" id="mentTab_buy" onclick="switchMentTab('buy')">살/말</button>
-                <button class="ment-tab-btn" id="mentTab_eat" onclick="switchMentTab('eat')">먹/말</button>
+                <button class="ment-tab-btn active" id="mentTabDo" onclick="switchMentTab('do')">할/말</button>
+                <button class="ment-tab-btn" id="mentTabBuy" onclick="switchMentTab('buy')">살/말</button>
+                <button class="ment-tab-btn" id="mentTabEat" onclick="switchMentTab('eat')">먹/말</button>
             </div>
 
             <div class="ment-list-area" id="mentListArea">
@@ -668,11 +889,11 @@
 
             <div class="ment-add-row">
                 <input type="text" id="newMentInput" placeholder="새 대사 입력..." maxlength="30">
-                <button class="ment-add-btn" onclick="addNewMent()">추가</button>
+                <button class="ment-add-btn" id="mentAddBtn" onclick="addNewMent()">추가</button>
             </div>
 
             <div class="modal-buttons" style="margin-top: 5px;">
-                <button onclick="closeMentModal()">완료</button>
+                <button id="mentDoneBtn" onclick="closeMentModal()">완료</button>
             </div>
         </div>
     </div>
@@ -693,88 +914,410 @@
     <audio id="popSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
 
     <script>
-        // 공통 포토카드 동기화
-        const imageUpload = document.getElementById('imageUpload');
-        const previewImage = document.getElementById('previewImage');
-        const uploadText = document.getElementById('uploadText');
-        const roulettePreviewImage = document.getElementById('roulettePreviewImage');
-        const rouletteUploadText = document.getElementById('rouletteUploadText');
-        const speechBubble = document.getElementById('speechBubble');
-        const popSound = document.getElementById('popSound');
-
-        // 크롭 관련
-        const cropPopup = document.getElementById('cropPopup');
-        const imageToCrop = document.getElementById('imageToCrop');
-        const cancelCropBtn = document.getElementById('cancelCropBtn');
-        const applyCropBtn = document.getElementById('applyCropBtn');
+        let currentLang = 'ko';
+        let currentTheme = 'animal';
+        let customUserColor = '#9e9e9e';
+        
+        try { currentLang = localStorage.getItem('appLang') || 'ko'; } catch(e){}
+        try { currentTheme = localStorage.getItem('appTheme') || 'animal'; } catch(e){}
+        try { customUserColor = localStorage.getItem('customUserColor') || '#9e9e9e'; } catch(e){}
+        
+        let isRolling = false;
+        let isSpinning = false;
+        let currentRotation = 0;
         let cropper = null;
-
-        // 1. 초기 데이터 로드 (사진 & 대사)
-        const defaultLists = {
-            do: [
-                "할까 말까 할 때는 해야지",
-                "왠지 고민이 돼? 그럼 잠깐 쉴까?",
-                "그래도 해야지",
-                "좀 더 고민해 보는 게 어때?"
-            ],
-            buy: [
-                "당장 장바구니 ㄱㄱ",
-                "지갑 닫자 통장 운다",
-                "살까 말까 할 땐 사서 남겨",
-                "이 돈 아껴서 나중에 더 좋은 거 사자"
-            ],
-            eat: [
-                "참을 수 있다 ^^",
-                "먹고 죽은 귀신이? 때깔도 곱다",
-                "어~ 안 돼~ 일찍 자~",
-                "뭐 해? 아직 안 시켰어?"
-            ]
-        };
-
         let currentMentCategory = 'do';
-        let customLists = JSON.parse(localStorage.getItem('customMentLists')) || defaultLists;
+        let lastChoiceType = null; 
+        let rouletteSlots = ["", "", "", ""];
 
-        window.onload = function() {
-            const savedImage = localStorage.getItem('biasPhoto');
-            if (savedImage) {
-                setPhoto(savedImage);
+        const i18n = {
+            ko: {
+                btnChoice: "💬 골라 주기",
+                btnRoulette: "🎯 룰렛 돌리기",
+                tabDo: "할/말",
+                tabBuy: "살/말",
+                tabEat: "먹/말",
+                uploadHint: "클릭해서<br>사진 넣기",
+                bubbleChoice: "위에 있는 탭을 눌러봐!",
+                bubbleRoulette: "내가 룰렛을 힘차게 돌려 줄게!",
+                manageMent: "✏️ 최애 멘트 수정하기",
+                spinStart: "🎯 룰렛 START!",
+                slotTxt1: "선택지 개수 : ",
+                slotTxt2: "개",
+                phOption: "내용 입력...",
+                mentTitle: "✏️ 최애의 대사 편집",
+                mentTabDo: "할/말",
+                mentTabBuy: "살/말",
+                mentTabEat: "먹/말",
+                btnDelete: "삭제",
+                phNewMent: "새 대사 입력...",
+                btnAdd: "추가",
+                btnDone: "완료",
+                btnCancel: "취소",
+                btnCrop: "자르기 완료",
+                spinIng: "과연 내 선택은...?! 🌀",
+                spinResultPre: "내 선택은 바로 <strong>[ ",
+                spinResultPost: " ]</strong> 이야! 🎉",
+                alertChoice: "먼저 위의 탭을 하나 골라주세요!",
+                emptyLine: "대사를 추가해줘!",
+                emptySlot: "빈칸",
+                themeTitle: "🎨 테마 설정",
+                themeAnimal: "🍃 동물의 숲",
+                themeAngel: "👼 천사와 악마",
+                themePink: "🎀 핑크핑크",
+                themeCustom: "🎨 커스텀 컬러",
+                btnClose: "닫기"
+            },
+            en: {
+                btnChoice: "💬 Decide",
+                btnRoulette: "🎯 Roulette",
+                tabDo: "Do/Not",
+                tabBuy: "Buy/Not",
+                tabEat: "Eat/Not",
+                uploadHint: "Click to<br>Upload",
+                bubbleChoice: "Click a tab above!",
+                bubbleRoulette: "I'll spin it for you!",
+                manageMent: "✏️ Edit Lines",
+                spinStart: "🎯 START!",
+                slotTxt1: "Options: ",
+                slotTxt2: "",
+                phOption: "Enter option...",
+                mentTitle: "✏️ Edit Bias Lines",
+                mentTabDo: "Do",
+                mentTabBuy: "Buy",
+                mentTabEat: "Eat",
+                btnDelete: "Del",
+                phNewMent: "New line...",
+                btnAdd: "Add",
+                btnDone: "Done",
+                btnCancel: "Cancel",
+                btnCrop: "Crop",
+                spinIng: "My choice is...?! 🌀",
+                spinResultPre: "My choice is <strong>[ ",
+                spinResultPost: " ]</strong>! 🎉",
+                alertChoice: "Please select a tab first!",
+                emptyLine: "Please add lines!",
+                emptySlot: "Empty",
+                themeTitle: "🎨 Theme Settings",
+                themeAnimal: "🍃 Animal Crossing",
+                themeAngel: "👼 Angel & Demon",
+                themePink: "🎀 Pink Pink",
+                themeCustom: "🎨 Custom Color",
+                btnClose: "Close"
+            },
+            ja: {
+                btnChoice: "💬 決めてあげる",
+                btnRoulette: "🎯 ルーレット",
+                tabDo: "する/しない",
+                tabBuy: "買う/買わない",
+                tabEat: "食べる/食べない",
+                uploadHint: "クリックして<br>写真追加",
+                bubbleChoice: "上のタブを押してみて！",
+                bubbleRoulette: "ルーレットを回してあげる！",
+                manageMent: "✏️ セリフを編集",
+                spinStart: "🎯 スタート！",
+                slotTxt1: "選択肢: ",
+                slotTxt2: " 個",
+                phOption: "内容を入力...",
+                mentTitle: "✏️ セリフ編集",
+                mentTabDo: "する",
+                mentTabBuy: "買う",
+                mentTabEat: "食べる",
+                btnDelete: "削除",
+                phNewMent: "新しいセリフ...",
+                btnAdd: "追加",
+                btnDone: "完了",
+                btnCancel: "キャンセル",
+                btnCrop: "切り抜き",
+                spinIng: "果たして私の選択は…？！ 🌀",
+                spinResultPre: "私の選択は <strong>[ ",
+                spinResultPost: " ]</strong> だよ！ 🎉",
+                alertChoice: "先に上のタブを選んでね！",
+                emptyLine: "セリフを追加してね！",
+                emptySlot: "空欄",
+                themeTitle: "🎨 テーマ設定",
+                themeAnimal: "🍃 どうぶつの森",
+                themeAngel: "👼 天使と悪魔",
+                themePink: "🎀 ピンクピンク",
+                themeCustom: "🎨 カスタムカラー",
+                btnClose: "閉じる"
+            },
+            zh: {
+                btnChoice: "💬 帮你做决定",
+                btnRoulette: "🎯 转轮盘",
+                tabDo: "做/不做",
+                tabBuy: "买/不买",
+                tabEat: "吃/不吃",
+                uploadHint: "点击<br>上传照片",
+                bubbleChoice: "按一下上面的标签吧！",
+                bubbleRoulette: "我来帮你转轮盘！",
+                manageMent: "✏️ 编辑台词",
+                spinStart: "🎯 开始！",
+                slotTxt1: "选项: ",
+                slotTxt2: " 个",
+                phOption: "输入内容...",
+                mentTitle: "✏️ 编辑台词",
+                mentTabDo: "做",
+                mentTabBuy: "买",
+                mentTabEat: "吃",
+                btnDelete: "删除",
+                phNewMent: "新台词...",
+                btnAdd: "添加",
+                btnDone: "完成",
+                btnCancel: "取消",
+                btnCrop: "裁剪",
+                spinIng: "我的选择是...？！ 🌀",
+                spinResultPre: "我的选择是 <strong>[ ",
+                spinResultPost: " ]</strong>！ 🎉",
+                alertChoice: "请先选择上面的标签！",
+                emptyLine: "请添加台词！",
+                emptySlot: "空白",
+                themeTitle: "🎨 主题设置",
+                themeAnimal: "🍃 动森主题",
+                themeAngel: "👼 天使与恶魔",
+                themePink: "🎀 粉色甜心",
+                themeCustom: "🎨 自定义颜色",
+                btnClose: "关闭"
             }
-            initRoulette();
         };
 
-        function setPhoto(base64) {
-            previewImage.src = base64;
-            previewImage.style.display = 'block';
-            uploadText.style.display = 'none';
+        const defaultMentsDict = {
+            ko: {
+                do: ["할까 말까 할 때는 해야지", "왠지 고민이 돼? 그럼 잠깐 쉴까?", "그래도 해야지", "좀 더 고민해 보는 게 어때?"],
+                buy: ["당장 장바구니 ㄱㄱ", "지갑 닫자 통장 운다", "살까 말까 할 땐 사서 남겨", "이 돈 아껴서 나중에 더 좋은 거 사자"],
+                eat: ["참을 수 있다 ^^", "먹고 죽은 귀신이? 때깔도 곱다", "어~ 안 돼~ 일찍 자~", "뭐 해? 아직 안 시켰어?"]
+            },
+            en: {
+                do: ["Just do it!", "Hesitating? Take a break.", "You still gotta do it.", "Think about it a bit more?"],
+                buy: ["Add to cart RIGHT NOW", "Close your wallet...", "When in doubt, buy it.", "Save money for something better."],
+                eat: ["You can hold it ^^", "Food makes you happier!", "No way~ Go to sleep~", "What are you waiting for? Order!"]
+            },
+            ja: {
+                do: ["迷ったらやるべき！", "悩んでる？少し休む？", "それでもやらなきゃ", "もう少し考えてみたら？"],
+                buy: ["今すぐカートに入れなよ", "お財布の紐を締めよう", "迷ったら買っておこう", "節約して後でいいもの買おう"],
+                eat: ["我慢できるよ ^^", "食べて後悔はない！", "だめだめ〜 早く寝なよ〜", "何してるの？早く頼みなよ！"]
+            },
+            zh: {
+                do: ["犹豫的时候就去做吧！", "有点纠结？休息一下吧？", "但还是得做啊", "再多考虑一下怎么样？"],
+                buy: ["赶紧加入购物车", "快关上钱包", "犹豫要不要买的时候就买", "省下这笔钱以后买更好的"],
+                eat: ["你可以忍住的 ^^", "吃好吃的才会开心！", "不～行～早点睡吧～", "还在干嘛？怎么还没点？"]
+            }
+        };
 
-            roulettePreviewImage.src = base64;
-            roulettePreviewImage.style.display = 'block';
-            rouletteUploadText.style.display = 'none';
+        const tabEmojis = {
+            'animal': { 'do': '🍃', 'buy': '👛', 'eat': '🧺' },
+            'angel-demon': { 'do': '👼', 'buy': '👿', 'eat': '🪽' },
+            'pink': { 'do': '🎀', 'buy': '💖', 'eat': '🌸' },
+            'custom': { 'do': '✨', 'buy': '⭐', 'eat': '☁️' }
+        };
+
+        const themeDecos = {
+            'animal': ['✨', '🍎', '💕', '🍓'],
+            'angel-demon': ['🖤', '🤍', '🖤', '🤍'],
+            'pink': ['🎀', '💖', '🎀', '💖'],
+            'custom': ['✨', '⭐', '☁️', '✨']
+        };
+
+        const rouletteColorPalettes = {
+            'animal': ["#c5e3d5", "#f6c5c8", "#fce19a", "#bae6fd", "#e8d5f5", "#fed7aa", "#bbf7d0", "#fecdd3", "#fef08a", "#e0e7ff"],
+            'angel-demon': ["#ffffff", "#dddddd", "#ffffff", "#cccccc", "#eeeeee", "#bbbbbb", "#ffffff", "#dddddd", "#eeeeee", "#cccccc"],
+            'pink': ["#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1", "#ffb6c1"],
+            'custom': [] 
+        };
+
+        let savedAllMents = null;
+        try { savedAllMents = JSON.parse(localStorage.getItem('allCustomMents')); } catch(e){}
+        
+        if (!savedAllMents) {
+            let oldMents = null;
+            try { oldMents = JSON.parse(localStorage.getItem('customMentLists')); } catch(e){}
+            
+            savedAllMents = JSON.parse(JSON.stringify(defaultMentsDict));
+            if (oldMents) savedAllMents.ko = oldMents; 
+            try { localStorage.setItem('allCustomMents', JSON.stringify(savedAllMents)); } catch(e){}
         }
 
-        // 모드 전환
-        function switchMode(mode) {
-            const choiceView = document.getElementById('choiceView');
-            const rouletteView = document.getElementById('rouletteView');
-            const modeChoiceBtn = document.getElementById('modeChoiceBtn');
-            const modeRouletteBtn = document.getElementById('modeRouletteBtn');
+        let customLists = savedAllMents[currentLang];
 
-            if (mode === 'choice') {
-                choiceView.style.display = 'flex';
-                rouletteView.style.display = 'none';
-                modeChoiceBtn.classList.add('active');
-                modeRouletteBtn.classList.remove('active');
+        window.onload = function() {
+            document.getElementById('langSelect').value = currentLang;
+            updateLangDOM();
+            
+            if(currentTheme === 'custom' && customUserColor) {
+                updateCustomColor(customUserColor);
             } else {
-                choiceView.style.display = 'none';
-                rouletteView.style.display = 'flex';
-                modeChoiceBtn.classList.remove('active');
-                modeRouletteBtn.classList.add('active');
+                applyTheme(currentTheme);
+                document.getElementById('customColorPicker').value = customUserColor;
+            }
+
+            let savedImage = null;
+            try { savedImage = localStorage.getItem('biasPhoto'); } catch(e){}
+            if (savedImage) setPhoto(savedImage);
+            
+            initRoulette();
+            switchMode('choice'); 
+        };
+
+        // ================= [ 테마 관련 로직 ] =================
+        function openThemeModal() { document.getElementById('themeModal').style.display = 'flex'; }
+        function closeThemeModal() { document.getElementById('themeModal').style.display = 'none'; }
+        
+        function changeTheme(theme) {
+            currentTheme = theme;
+            try { localStorage.setItem('appTheme', theme); } catch(e){}
+            if(theme === 'custom') {
+                updateCustomColor(document.getElementById('customColorPicker').value);
+            } else {
+                applyTheme(theme);
+            }
+        }
+
+        function updateCustomColor(color) {
+            customUserColor = color;
+            try { localStorage.setItem('customUserColor', color); } catch(e){}
+            document.documentElement.style.setProperty('--user-color', color);
+            
+            let r = parseInt(color.substring(1,3), 16);
+            let g = parseInt(color.substring(3,5), 16);
+            let b = parseInt(color.substring(5,7), 16);
+            
+            let pR = Math.round(r + (255 - r) * 0.9);
+            let pG = Math.round(g + (255 - g) * 0.9);
+            let pB = Math.round(b + (255 - b) * 0.9);
+            document.documentElement.style.setProperty('--user-bg-color', `rgb(${pR}, ${pG}, ${pB})`);
+            
+            applyTheme(currentTheme);
+        }
+
+        function applyTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            updateDecos();
+            updateTabs();
+            drawRoulette();
+        }
+
+        function getDecos() {
+            return themeDecos[currentTheme] || themeDecos['animal'];
+        }
+
+        function updateDecos() {
+            const d = getDecos();
+            document.querySelectorAll('.deco-1').forEach(el => el.innerText = d[0]);
+            document.querySelectorAll('.deco-2').forEach(el => el.innerText = d[1]);
+            document.querySelectorAll('.deco-3').forEach(el => el.innerText = d[2]);
+            document.querySelectorAll('.deco-4').forEach(el => el.innerText = d[3]);
+        }
+
+        function getRouletteColors() {
+            if (currentTheme === 'custom') {
+                return [customUserColor, "#ffffff", customUserColor, "#f0f0f0", customUserColor, "#e0e0e0", customUserColor, "#ffffff", customUserColor, "#f0f0f0"];
+            }
+            return rouletteColorPalettes[currentTheme] || rouletteColorPalettes['animal'];
+        }
+
+        // ================= [ 언어 변경 로직 ] =================
+        function changeLang(lang) {
+            currentLang = lang;
+            try { localStorage.setItem('appLang', lang); } catch(e){}
+            customLists = savedAllMents[currentLang];
+            updateLangDOM();
+        }
+
+        function updateTabs() {
+            const dict = i18n[currentLang];
+            const emojis = tabEmojis[currentTheme] || tabEmojis['animal'];
+            document.getElementById('tabDo').innerText = `${dict.tabDo} ${emojis.do}`;
+            document.getElementById('tabBuy').innerText = `${dict.tabBuy} ${emojis.buy}`;
+            document.getElementById('tabEat').innerText = `${dict.tabEat} ${emojis.eat}`;
+            
+            document.getElementById('mentTabDo').innerText = dict.mentTabDo;
+            document.getElementById('mentTabBuy').innerText = dict.mentTabBuy;
+            document.getElementById('mentTabEat').innerText = dict.mentTabEat;
+        }
+
+        function updateLangDOM() {
+            const dict = i18n[currentLang];
+            
+            document.getElementById('switchBtnChoice').innerText = dict.btnChoice;
+            document.getElementById('switchBtnRoulette').innerText = dict.btnRoulette;
+
+            updateTabs();
+
+            document.getElementById('uploadTxtSpanChoice').innerHTML = dict.uploadHint;
+            document.getElementById('uploadTxtSpanRoulette').innerHTML = dict.uploadHint;
+
+            if (!isRolling) {
+                const d = getDecos();
+                document.getElementById('speechBubble').innerHTML = `<span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span><span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span><span id="bubbleTextChoice">${dict.bubbleChoice}</span>`;
+            }
+            if (!isSpinning) {
+                const d = getDecos();
+                document.getElementById('rouletteSpeech').innerHTML = `<span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span><span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span><span id="bubbleTextRoulette">${dict.bubbleRoulette}</span>`;
+            }
+
+            document.getElementById('manageMentBtnText').innerText = dict.manageMent;
+            document.getElementById('spinBtn').innerText = dict.spinStart;
+            
+            document.getElementById('slotTxt1').innerText = dict.slotTxt1;
+            document.getElementById('slotTxt2').innerText = dict.slotTxt2;
+
+            document.getElementById('mentModalTitle').innerText = dict.mentTitle;
+            document.getElementById('newMentInput').placeholder = dict.phNewMent;
+            document.getElementById('mentAddBtn').innerText = dict.btnAdd;
+            document.getElementById('mentDoneBtn').innerText = dict.btnDone;
+
+            document.getElementById('cancelCropBtn').innerText = dict.btnCancel;
+            document.getElementById('applyCropBtn').innerText = dict.btnCrop;
+
+            document.getElementById('themeModalTitle').innerText = dict.themeTitle;
+            document.getElementById('themeBtnAnimal').innerText = dict.themeAnimal;
+            document.getElementById('themeBtnAngel').innerText = dict.themeAngel;
+            document.getElementById('themeBtnPink').innerText = dict.themePink;
+            document.getElementById('themeBtnCustom').innerText = dict.themeCustom;
+            document.getElementById('themeCloseBtn').innerText = dict.btnClose;
+
+            renderRouletteInputs();
+            if(document.getElementById('mentModal').style.display === 'flex') {
+                renderMentList();
+            }
+        }
+
+        // ================= [ 사진 설정 및 모드 스위치 ] =================
+        function setPhoto(base64) {
+            document.querySelectorAll('.preview-img-choice, .preview-img-roulette').forEach(img => {
+                img.src = base64;
+                img.style.display = 'block';
+            });
+            document.querySelectorAll('.upload-text-choice, .upload-text-roulette').forEach(txt => {
+                txt.style.display = 'none';
+            });
+        }
+
+        function switchMode(mode) {
+            document.getElementById('choiceView').style.display = 'none';
+            document.getElementById('rouletteView').style.display = 'none';
+            
+            if (mode === 'choice') {
+                document.getElementById('choiceView').style.display = 'flex';
+                document.getElementById('switchBtnChoice').classList.add('active');
+                document.getElementById('switchBtnRoulette').classList.remove('active');
+            } else if (mode === 'roulette') {
+                document.getElementById('rouletteView').style.display = 'flex';
+                document.getElementById('switchBtnChoice').classList.remove('active');
+                document.getElementById('switchBtnRoulette').classList.add('active');
                 drawRoulette();
             }
         }
 
-        // 이미지 크롭 설정
-        imageUpload.addEventListener('change', function(e) {
+        // ================= [ 이미지 업로드 및 크롭 ] =================
+        const imageUploadChoice = document.getElementById('imageUploadChoice');
+        const imageUploadRoulette = document.getElementById('imageUploadRoulette');
+        const cropPopup = document.getElementById('cropPopup');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const cancelCropBtn = document.getElementById('cancelCropBtn');
+        const applyCropBtn = document.getElementById('applyCropBtn');
+
+        function handleImageUpload(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -799,7 +1342,9 @@
                 reader.readAsDataURL(file);
             }
             e.target.value = '';
-        });
+        }
+        imageUploadChoice.addEventListener('change', handleImageUpload);
+        imageUploadRoulette.addEventListener('change', handleImageUpload);
 
         cancelCropBtn.addEventListener('click', function() {
             cropPopup.style.display = 'none';
@@ -811,36 +1356,37 @@
             const canvas = cropper.getCroppedCanvas({ width: 500, height: 720 });
             const croppedBase64 = canvas.toDataURL('image/jpeg', 0.9);
             setPhoto(croppedBase64);
-            localStorage.setItem('biasPhoto', croppedBase64);
+            try { localStorage.setItem('biasPhoto', croppedBase64); } catch(e){}
             cropPopup.style.display = 'none';
             cropper.destroy();
         });
 
-        // 슬롯머신 결정 로직
-        let isRolling = false;
+        // ================= [ 골라 주기 로직 ] =================
         function decide(type) {
             if (isRolling) return; 
             isRolling = true;
+            lastChoiceType = type;
+            const popSound = document.getElementById('popSound');
             popSound.currentTime = 0;
             popSound.play().catch(e => {});
 
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            if (type === 'do') document.querySelector('.tab-do').classList.add('active');
-            else if (type === 'buy') document.querySelector('.tab-buy').classList.add('active');
-            else if (type === 'eat') document.querySelector('.tab-eat').classList.add('active');
+            if (type === 'do') document.getElementById('tabDo').classList.add('active');
+            else if (type === 'buy') document.getElementById('tabBuy').classList.add('active');
+            else if (type === 'eat') document.getElementById('tabEat').classList.add('active');
 
             let list = customLists[type];
-            if (!list || list.length === 0) list = ["대사를 추가해줘!"];
+            if (!list || list.length === 0) list = [i18n[currentLang].emptyLine];
 
             let counter = 0;
             let maxRolls = 12; 
+            const d = getDecos();
+            const speechBubble = document.getElementById('speechBubble');
             let rollInterval = setInterval(() => {
                 let randomText = list[Math.floor(Math.random() * list.length)];
                 speechBubble.innerHTML = `
-                    <span class="deco deco-1">✨</span>
-                    <span class="deco deco-2">🍎</span>
-                    <span class="deco deco-3">💕</span>
-                    <span class="deco deco-4">🍓</span>
+                    <span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span>
+                    <span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span>
                     ${randomText}
                 `;
                 counter++;
@@ -849,10 +1395,8 @@
                     clearInterval(rollInterval);
                     let finalChoice = list[Math.floor(Math.random() * list.length)];
                     speechBubble.innerHTML = `
-                        <span class="deco deco-1">✨</span>
-                        <span class="deco deco-2">🍎</span>
-                        <span class="deco deco-3">💕</span>
-                        <span class="deco deco-4">🍓</span>
+                        <span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span>
+                        <span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span>
                         ${finalChoice}
                     `;
                     isRolling = false;
@@ -860,79 +1404,67 @@
             }, 60); 
         }
 
-        // 멘트 추가/삭제 모달 로직
+        function retryDecide() {
+            if (lastChoiceType) decide(lastChoiceType);
+            else alert(i18n[currentLang].alertChoice);
+        }
+
+        // ================= [ 멘트 추가/삭제 모달 ] =================
         function openMentModal() {
             document.getElementById('mentModal').style.display = 'flex';
             renderMentList();
         }
-
-        function closeMentModal() {
-            document.getElementById('mentModal').style.display = 'none';
-        }
-
+        function closeMentModal() { document.getElementById('mentModal').style.display = 'none'; }
         function switchMentTab(cat) {
             currentMentCategory = cat;
             document.querySelectorAll('.ment-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('mentTab_' + cat).classList.add('active');
+            document.getElementById('mentTab' + cat.charAt(0).toUpperCase() + cat.slice(1)).classList.add('active');
             renderMentList();
         }
-
         function renderMentList() {
             const listArea = document.getElementById('mentListArea');
             listArea.innerHTML = '';
             const items = customLists[currentMentCategory] || [];
-
             items.forEach((text, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'ment-item';
                 itemDiv.innerHTML = `
                     <span>${text}</span>
-                    <button class="ment-delete-btn" onclick="deleteMent(${index})">삭제</button>
+                    <button class="ment-delete-btn" onclick="deleteMent(${index})">${i18n[currentLang].btnDelete}</button>
                 `;
                 listArea.appendChild(itemDiv);
             });
         }
-
         function addNewMent() {
             const input = document.getElementById('newMentInput');
             const val = input.value.trim();
             if (!val) return;
-
             customLists[currentMentCategory].push(val);
-            localStorage.setItem('customMentLists', JSON.stringify(customLists));
+            savedAllMents[currentLang] = customLists;
+            try { localStorage.setItem('allCustomMents', JSON.stringify(savedAllMents)); } catch(e){}
             input.value = '';
             renderMentList();
         }
-
         function deleteMent(index) {
             customLists[currentMentCategory].splice(index, 1);
-            localStorage.setItem('customMentLists', JSON.stringify(customLists));
+            savedAllMents[currentLang] = customLists;
+            try { localStorage.setItem('allCustomMents', JSON.stringify(savedAllMents)); } catch(e){}
             renderMentList();
         }
 
         // ================= [ 룰렛 로직 ] =================
-        let rouletteSlots = ["선택지 1", "선택지 2", "선택지 3", "선택지 4"];
-        const rouletteColors = ["#c5e3d5", "#f6c5c8", "#fce19a", "#bae6fd", "#e8d5f5", "#fed7aa"];
-        let isSpinning = false;
-        let currentRotation = 0;
-
         function initRoulette() {
             renderRouletteInputs();
-            drawRoulette();
         }
 
         function changeSlotCount(delta) {
             if (isSpinning) return;
             let newCount = rouletteSlots.length + delta;
-            if (newCount < 2 || newCount > 6) return;
+            if (newCount < 2 || newCount > 10) return;
 
-            if (delta > 0) {
-                rouletteSlots.push(`선택지 ${newCount}`);
-            } else {
-                rouletteSlots.pop();
-            }
+            if (delta > 0) rouletteSlots.push("");
+            else rouletteSlots.pop();
 
-            document.getElementById('slotCountDisplay').innerText = rouletteSlots.length;
             renderRouletteInputs();
             drawRoulette();
         }
@@ -947,7 +1479,7 @@
                 row.className = 'roulette-input-item';
                 row.innerHTML = `
                     <span>${i+1}</span>
-                    <input type="text" value="${val}" placeholder="내용 입력..." oninput="updateSlotText(${i}, this.value)">
+                    <input type="text" value="${val}" placeholder="${i18n[currentLang].phOption}" oninput="updateSlotText(${i}, this.value)">
                 `;
                 container.appendChild(row);
             });
@@ -958,93 +1490,108 @@
             drawRoulette();
         }
 
+        function resetRoulette() {
+            if (isSpinning) return;
+            rouletteSlots = ["", "", "", ""];
+            renderRouletteInputs();
+            drawRoulette();
+            const d = getDecos();
+            document.getElementById('rouletteSpeech').innerHTML = `
+                <span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span>
+                <span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span>
+                <span id="bubbleTextRoulette">${i18n[currentLang].bubbleRoulette}</span>
+            `;
+        }
+
         function drawRoulette() {
             const canvas = document.getElementById('rouletteCanvas');
             const ctx = canvas.getContext('2d');
             const numSlots = rouletteSlots.length;
             const arc = (2 * Math.PI) / numSlots;
             const radius = canvas.width / 2;
+            const colors = getRouletteColors();
+            
+            let textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (let i = 0; i < numSlots; i++) {
                 const angle = i * arc;
                 ctx.beginPath();
-                ctx.fillStyle = rouletteColors[i % rouletteColors.length];
+                ctx.fillStyle = colors[i % colors.length];
                 ctx.moveTo(radius, radius);
                 ctx.arc(radius, radius, radius, angle, angle + arc);
                 ctx.fill();
                 ctx.stroke();
 
-                // 텍스트 그리기
                 ctx.save();
                 ctx.translate(radius, radius);
                 ctx.rotate(angle + arc / 2);
-                ctx.textAlign = 'right';
-                ctx.fillStyle = '#5c4332';
-                ctx.font = '14px Jua';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                if (currentTheme === 'angel-demon') ctx.fillStyle = '#111111';
+                else if (currentTheme === 'custom') ctx.fillStyle = '#333333';
+                else ctx.fillStyle = textColor;
+                
+                ctx.font = `bold 14px "Nunito", "Gowun Dodum", sans-serif`;
+                
                 const text = rouletteSlots[i] || '';
-                ctx.fillText(text.length > 6 ? text.substring(0, 5) + '..' : text, radius - 15, 5);
+                ctx.fillText(text.length > 7 ? text.substring(0, 6) + '..' : text, radius * 0.6, 0);
                 ctx.restore();
             }
 
-            // 가운데 원 데코
             ctx.beginPath();
             ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
-            ctx.fillStyle = '#fffbf2';
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--canvas-center').trim();
             ctx.fill();
-            ctx.strokeStyle = '#d4a373';
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-border').trim();
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            // 가운데 발바닥
-            ctx.fillStyle = '#d4a373';
-            ctx.font = '14px Jua';
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-border').trim();
+            ctx.font = '14px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('🐾', radius, radius + 5);
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🐾', radius, radius + 2);
         }
 
         function spinRoulette() {
             if (isSpinning) return;
             isSpinning = true;
 
+            const d = getDecos();
             const rouletteSpeech = document.getElementById('rouletteSpeech');
             rouletteSpeech.innerHTML = `
-                <span class="deco deco-1">✨</span>
-                <span class="deco deco-2">🍎</span>
-                <span class="deco deco-3">💕</span>
-                <span class="deco deco-4">🍓</span>
-                과연 최애의 선택은...?! 🌀
+                <span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span>
+                <span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span>
+                ${i18n[currentLang].spinIng}
             `;
 
+            const popSound = document.getElementById('popSound');
             popSound.currentTime = 0;
             popSound.play().catch(e => {});
 
             const canvas = document.getElementById('rouletteCanvas');
             const numSlots = rouletteSlots.length;
             
-            // 랜덤 바퀴 수 + 랜덤 슬롯 결정
-            const randomSpin = Math.floor(Math.random() * 360) + 1800; // 최소 5바퀴
+            const randomSpin = Math.floor(Math.random() * 360) + 1800; 
             currentRotation += randomSpin;
             canvas.style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
-                // 당첨 인덱스 계산 (상단 핀 기준 - 270도/위쪽 방향)
                 const actualDeg = currentRotation % 360;
                 const arcDeg = 360 / numSlots;
-                // 위쪽 핀(270도)에 걸리는 슬롯 계산
                 let winningIndex = Math.floor((360 - (actualDeg % 360) + 270) % 360 / arcDeg);
-                let winnerText = rouletteSlots[winningIndex] || "선택 완료!";
+                let winnerText = rouletteSlots[winningIndex] ? rouletteSlots[winningIndex] : i18n[currentLang].emptySlot;
 
                 rouletteSpeech.innerHTML = `
-                    <span class="deco deco-1">✨</span>
-                    <span class="deco deco-2">🍎</span>
-                    <span class="deco deco-3">💕</span>
-                    <span class="deco deco-4">🍓</span>
-                    최애의 선택은 바로 <strong>[${winnerText}]</strong>! 🎉
+                    <span class="deco deco-1">${d[0]}</span><span class="deco deco-2">${d[1]}</span>
+                    <span class="deco deco-3">${d[2]}</span><span class="deco deco-4">${d[3]}</span>
+                    ${i18n[currentLang].spinResultPre}${winnerText}${i18n[currentLang].spinResultPost}
                 `;
                 isSpinning = false;
-            }, 4000); // 회전 시간 4초
+            }, 4000); 
         }
     </script>
 </body>
