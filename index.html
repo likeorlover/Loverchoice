@@ -201,24 +201,21 @@
         }
 
         /* ---------------- [ 상단 네비게이션 ] ---------------- */
-        .top-nav {
+        .header-layout {
             width: 100%;
             display: flex;
-            justify-content: flex-end; 
+            justify-content: space-between; 
             align-items: center;
             margin-top: 5px;
-            margin-bottom: 5px;
-            padding: 0 5px;
+            margin-bottom: 15px;
+            padding: 0 2px;
             z-index: 20;
-            gap: 8px;
         }
 
-        
         .nav-controls {
             display: flex;
-            flex-direction: row;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
 
         .icon-btn, .lang-selector select {
@@ -227,7 +224,7 @@
             color: var(--top-btn-text);
             border-radius: 10px;
             padding: 4px 6px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             outline: none;
             box-shadow: 0 2px 0 var(--top-btn-border, var(--primary-border));
@@ -238,41 +235,34 @@
             box-shadow: none;
         }
 
-        /* 모드 전환 스위치 */
-        .mode-switch-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
         .mode-switch {
             display: flex;
             background-color: var(--switch-bg);
-            padding: 4px;
+            padding: 3px;
             border-radius: 20px;
             border: 2px solid var(--switch-border);
-            gap: 4px;
+            gap: 2px;
         }
 
         .mode-btn {
             border: none;
             background: transparent;
-            padding: 6px 16px; 
+            padding: 6px 10px; 
             border-radius: 16px;
-            font-size: 14px; 
+            font-size: 13px; 
             color: var(--switch-inactive-text, var(--text-sub));
             cursor: pointer;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .mode-btn.active {
             background-color: var(--window-bg);
             color: var(--text-main);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
         }
 
-        
         #choiceView .game-window {
             padding: 30px 12px;
             justify-content: center;
@@ -472,6 +462,22 @@
         }
 
         /* ---------------- [ 룰렛 뷰 전용 스타일 ] ---------------- */
+        .roulette-photo {
+            width: 150px !important;
+            height: 216px !important;
+            margin-bottom: 8px !important;
+            border-width: 4px !important;
+            border-radius: 10px !important;
+        }
+        .roulette-photo .paw { font-size: 20px !important; }
+        .roulette-photo .upload-text { font-size: 13px !important; }
+        
+        #rouletteSpeech {
+            margin-bottom: 8px !important;
+            min-height: 36px !important;
+            padding: 12px 12px 6px 12px !important;
+            font-size: 13px !important;
+        }
         #rouletteView {
             display: none;
             width: 100%;
@@ -481,9 +487,9 @@
 
         .roulette-area {
             position: relative;
-            width: 200px; 
-            height: 200px;
-            margin: 10px 0 15px;
+            width: 170px;
+            height: 170px;
+            margin: 5px 0 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -491,21 +497,21 @@
 
         .roulette-pointer {
             position: absolute;
-            top: -12px;
+            top: -6px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 20px solid var(--primary-border); 
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid var(--primary-border); 
             z-index: 10;
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
         }
 
         canvas#rouletteCanvas {
-            width: 200px; 
-            height: 200px;
+            width: 170px;
+            height: 170px;
             border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border: 4px solid var(--primary-border);
@@ -516,8 +522,8 @@
             background-color: var(--spin-bg);
             border: 3px solid var(--spin-border, var(--primary-border));
             border-radius: 20px;
-            padding: 8px 24px;
-            font-size: 16px;
+            padding: 6px 18px;
+            font-size: 14px;
             color: var(--spin-text);
             cursor: pointer;
             box-shadow: 0 4px 0 var(--spin-border, var(--primary-border));
@@ -534,28 +540,28 @@
             background-color: var(--control-box-bg);
             border: 2px dashed var(--control-box-border, var(--primary-border));
             border-radius: 12px;
-            padding:  10px; 
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             color: var(--control-box-text);
         }
 
         .slot-count-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 15px;
+            gap: 8px;
+            font-size: 13px;
         }
 
         .count-btn {
             background-color: var(--action-btn-bg);
             border: 2px solid var(--primary-border);
             border-radius: 6px;
-            width: 28px;
-            height: 28px;
-            font-size: 16px;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -566,9 +572,9 @@
         .roulette-inputs-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             width: 100%;
-            max-height:  160px; 
+            max-height: 180px; 
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -586,8 +592,8 @@
 
         .roulette-input-item input {
             flex: 1;
-            padding: 8px 10px; 
-            font-size: 14px; 
+            padding: 6px 8px;
+            font-size: 13px; 
             border: 2px solid var(--primary-border);
             border-radius: 8px;
             background: var(--speech-bg);
@@ -754,17 +760,42 @@
         @media (min-width: 480px) {
             body { justify-content: center; padding: 30px 10px; }
             .app-container { margin: auto; }
+            
+            .header-layout {
+                flex-direction: row;
+                justify-content: center;
+                position: relative;
+                margin-top: 35px; /* 공간 확보 */
+                margin-bottom: 25px;
+            }
+            .nav-controls {
+                position: absolute;
+                right: 0;
+                top: -40px; /* 위로 완전 올림 */
+                transform: none;
+                margin-bottom: 0;
+            }
+            .mode-switch {
+                align-self: center;
+                padding: 4px;
+                gap: 4px;
+            }
             .mode-btn { padding: 6px 20px; font-size: 15px; }
-            .photocard-wrapper { width: 250px; }
-            .top-nav { margin-bottom: 25px; padding: 0 10px; }
+            .icon-btn, .lang-selector select { padding: 4px 8px; font-size: 14px; }
+            
+            #choiceView .photocard-wrapper { width: 270px; height: 388px; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
 
-        <!-- ================= [ 상단 네비게이션 (테마/언어) ] ================= -->
-        <div class="top-nav">
+        <!-- ================= [ 상단 네비게이션 (모드/테마/언어) ] ================= -->
+        <div class="header-layout">
+            <div class="mode-switch">
+                <button class="mode-btn active" id="switchBtnChoice" onclick="switchMode('choice')">골라 주기 💬</button>
+                <button class="mode-btn" id="switchBtnRoulette" onclick="switchMode('roulette')">룰렛 돌리기 🎯</button>
+            </div>
             <div class="nav-controls">
                 <button class="icon-btn" onclick="openThemeModal()">🎨</button>
                 <div class="lang-selector" style="position:static;">
@@ -775,14 +806,6 @@
                         <option value="zh">🇨🇳</option>
                     </select>
                 </div>
-            </div>
-        </div>
-
-        <!-- ================= [ 모드 전환 스위치 (단독 라인) ] ================= -->
-        <div class="mode-switch-container">
-            <div class="mode-switch">
-                <button class="mode-btn active" id="switchBtnChoice" onclick="switchMode('choice')">골라 주기 💬</button>
-                <button class="mode-btn" id="switchBtnRoulette" onclick="switchMode('roulette')">룰렛 돌리기 🎯</button>
             </div>
         </div>
 
@@ -849,7 +872,7 @@
                 <!-- 룰렛 영역 -->
                 <div class="roulette-area">
                     <div class="roulette-pointer"></div>
-                    <canvas id="rouletteCanvas" width="200" height="200"></canvas>
+                    <canvas id="rouletteCanvas" width="170" height="170"></canvas>
                 </div>
 
                 <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
@@ -1531,9 +1554,11 @@
             const colors = getRouletteColors();
             
             let textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
+            let borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-border').trim();
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // 1. 배경 색상 먼저 전부 채우기
             for (let i = 0; i < numSlots; i++) {
                 const angle = i * arc;
                 ctx.beginPath();
@@ -1541,8 +1566,22 @@
                 ctx.moveTo(radius, radius);
                 ctx.arc(radius, radius, radius, angle, angle + arc);
                 ctx.fill();
-                ctx.stroke();
+            }
 
+            // 2. 분할 선을 일정한 두께로 그리기
+            ctx.strokeStyle = borderColor;
+            ctx.lineWidth = 2; // 선 두께 고정
+            for (let i = 0; i < numSlots; i++) {
+                const angle = i * arc;
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.lineTo(radius + radius * Math.cos(angle), radius + radius * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            // 3. 텍스트 그리기
+            for (let i = 0; i < numSlots; i++) {
+                const angle = i * arc;
                 ctx.save();
                 ctx.translate(radius, radius);
                 ctx.rotate(angle + arc / 2);
@@ -1553,26 +1592,24 @@
                 else if (currentTheme === 'custom') ctx.fillStyle = '#333333';
                 else ctx.fillStyle = textColor;
                 
-                ctx.font = `bold 14px "Nunito", "Gowun Dodum", sans-serif`;
-                
                 const text = rouletteSlots[i] || '';
-                ctx.fillText(text.length > 7 ? text.substring(0, 6) + '..' : text, radius * 0.6, 0);
+                let fontSize = 15;
+                ctx.font = `bold ${fontSize}px "Nunito", "Gowun Dodum", sans-serif`;
+                let maxTextWidth = radius * 0.85; 
+                
+                while(ctx.measureText(text).width > maxTextWidth && fontSize > 8) {
+                    fontSize -= 1;
+                    ctx.font = `bold ${fontSize}px "Nunito", "Gowun Dodum", sans-serif`;
+                }
+                
+                let displayText = text;
+                if(ctx.measureText(displayText).width > maxTextWidth) {
+                    displayText = text.substring(0, 10) + '..';
+                }
+                
+                ctx.fillText(displayText, radius * 0.52, 0);
                 ctx.restore();
             }
-
-            ctx.beginPath();
-            ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--canvas-center').trim();
-            ctx.fill();
-            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-border').trim();
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-border').trim();
-            ctx.font = '14px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('🐾', radius, radius + 2);
         }
 
         function spinRoulette() {
